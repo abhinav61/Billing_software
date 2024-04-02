@@ -18,13 +18,41 @@ def bill():
         messagebox.showerror('Error','Customer Details are required')
     else:
         textarea.insert(END,'\t\t\t\tXYZ Saloon\n\t\t\t\t   India\n')
-        textarea.insert(END,f'\nBill Number: {billnumber}')
-        textarea.insert(END,f'\nCustomer Name: {nameEntry.get()}')
-        textarea.insert(END,f'\nPhone Number: {PhoneEntry.get()}')
+        textarea.insert(END,f'\nBill Number: {billnumber}\n')
+        textarea.insert(END,f'\nCustomer Name: {nameEntry.get()}\n')
+        textarea.insert(END,f'\nPhone Number: {PhoneEntry.get()}\n')
         textarea.insert(END,f'\nAddress: {AddEntry.get()}')
-        
+        textarea.insert(END,'\n------------------------------------------------------------------------')
+        textarea.insert(END,'Service\t\t\tQuantity\t\t\tPrice')
+        textarea.insert(END,'\n========================================================================')
+        if Hair_cutEntry.get()!='0':
+            textarea.insert(END,f'\nHair Cut\t\t\t{Hair_cutEntry.get()}\t\t\tRs {hair_cutservice_price}')
+        if WaxingEntry.get()!='0':
+            textarea.insert(END,f'\nWaxing\t\t\t{WaxingEntry.get()}\t\t\tRs {WaxingEntryservice_price}')
+        if HairwashEntry.get()!='0':
+            textarea.insert(END,f'\nHair Wash\t\t\t{HairwashEntry.get()}\t\t\tRs {HairwashEntryservice_price}')
+        if FacialEntry.get()!='0':
+            textarea.insert(END,f'\nFacial\t\t\t{FacialEntry.get()}\t\t\tRs {FacialEntryservice_price}')
+        if FacebleachEntry.get()!='0':
+            textarea.insert(END,f'\nFace Bleach\t\t\t{FacebleachEntry.get()}\t\t\tRs {FacebleachEntryservice_price}')
+        if HairspaEntry.get()!='0':
+            textarea.insert(END,f'\nHair Spa\t\t\t{HairspaEntry.get()}\t\t\tRs {HairspaEntryservice_price}')
+        if MedicureEntry.get()!='0':
+            textarea.insert(END,f'\nMedicure\t\t\t{MedicureEntry.get()}\t\t\tRs {MedicureEntryservice_price}')
+        if PedicureEntry.get()!='0':
+            textarea.insert(END,f'\nPedicure\t\t\t{PedicureEntry.get()}\t\t\tRs {PedicureEntryservice_price}')    
+        if MassageEntry.get()!='0':
+            textarea.insert(END,f'\nMassage\t\t\t{MassageEntry.get()}\t\t\tRs {MassageEntryservice_price}')       
+        if EyebrowEntry.get()!='0':
+            textarea.insert(END,f'\nEyebrow\t\t\t{EyebrowEntry.get()}\t\t\tRs {EyebrowEntryservice_price}')   
+        if HaircolourEntry.get()!='0':
+            textarea.insert(END,f'\nHair Colour\t\t\t{HaircolourEntry.get()}\t\t\tRs {HaircolourEntryservice_price}')   
+        if MakeupEntry.get()!='0':
+            textarea.insert(END,f'\nMakeup\t\t\t{MakeupEntry.get()}\t\t\tRs {MakeupEntryservice_price}')   
 
 def total():
+    global hair_cutservice_price, WaxingEntryservice_price, HairwashEntryservice_price, FacialEntryservice_price, FacebleachEntryservice_price, HairspaEntryservice_price
+    global MedicureEntryservice_price, PedicureEntryservice_price, MassageEntryservice_price, EyebrowEntryservice_price, HaircolourEntryservice_price, MakeupEntryservice_price
     # Service Calculation
     hair_cutservice_price=int(Hair_cutEntry.get())*100
     WaxingEntryservice_price = int(WaxingEntry.get())*30
