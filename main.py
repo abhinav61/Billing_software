@@ -1,6 +1,65 @@
 from tkinter import *
+from tkinter import messagebox
+import random
+
+billnumber=random.randint(500,1000)
+
+#Create the functionality
+def validate_input(new_value):
+    if new_value.isdigit() and len(new_value) <= 10:
+        return True
+    elif new_value == "":
+        return True
+    else:
+        return False
+    
+def bill():
+    if nameEntry.get() == '' or PhoneEntry.get() == '' or AddEntry.get() == '':
+        messagebox.showerror('Error','Customer Details are required')
+    else:
+        textarea.insert(END,'\t\t\t\tXYZ Saloon\n\t\t\t\t   India\n')
+        textarea.insert(END,f'\nBill Number: {billnumber}')
+        textarea.insert(END,f'\nCustomer Name: {nameEntry.get()}')
+        textarea.insert(END,f'\nPhone Number: {PhoneEntry.get()}')
+        textarea.insert(END,f'\nAddress: {AddEntry.get()}')
+        
+
+def total():
+    # Service Calculation
+    hair_cutservice_price=int(Hair_cutEntry.get())*100
+    WaxingEntryservice_price = int(WaxingEntry.get())*30
+    HairwashEntryservice_price = int(HairwashEntry.get())*50
+    FacialEntryservice_price = int(FacialEntry.get())*200
+    FacebleachEntryservice_price = int(FacebleachEntry.get())*150
+    HairspaEntryservice_price = int(HairspaEntry.get())*250
+    MedicureEntryservice_price = int(MedicureEntry.get())*30
+    PedicureEntryservice_price = int(PedicureEntry.get())*40
+    MassageEntryservice_price = int(MassageEntry.get())*500
+    EyebrowEntryservice_price = int(EyebrowEntry.get())*50
+    HaircolourEntryservice_price = int(HaircolourEntry.get())*1000
+    MakeupEntryservice_price = int(MakeupEntry.get())*2500
+
+    totalservice_price = hair_cutservice_price + WaxingEntryservice_price + HairwashEntryservice_price + FacialEntryservice_price + FacebleachEntryservice_price + HairspaEntryservice_price + MedicureEntryservice_price + PedicureEntryservice_price + MassageEntryservice_price + EyebrowEntryservice_price + HaircolourEntryservice_price + MakeupEntryservice_price                      
+    ServicePriceEntry.delete(0, END) #it will delete everything before the operation is performed
+    ServicePriceEntry.insert(0, 'Rs ' + str(totalservice_price))
+
+    # Product Price Calculation
+    LorealEntry_price = int(LorealEntry.get())*150
+    DoveEntry_price = int(DoveEntry.get())*120
+    PanteneEntry_price = int(PanteneEntry.get())*50
+    VLCCEntry_price = int(VLCCEntry.get())*200
+    SunsilkEntry_price = int(SunsilkEntry.get())*80
+    ClinicplusEntry_price = int(ClinicplusEntry.get())*40
+    
+    totalproduct_price = LorealEntry_price + DoveEntry_price + PanteneEntry_price + VLCCEntry_price + SunsilkEntry_price + ClinicplusEntry_price
+    TotalProductPriceEntry.delete(0,END) #it will delete everything before the operation is performed
+    TotalProductPriceEntry.insert(0, 'Rs '+ str(totalproduct_price))    
 
 
+
+
+    
+#Create the GUI
 #Create window
 root = Tk()
 root.title('Shopkeeper Retail System')
@@ -32,9 +91,10 @@ nameEntry = Entry(customer_detail_frame,font=('arial',15),bd=7,width=18)
 nameEntry.grid(row=0,column=3,padx=6)
 
 #To position the phone
-Phone_label = Label(customer_detail_frame, text='Phone Number', font=('times new roman',15, 'bold'),bg='magenta2',fg='black') 
+Phone_label = Label(customer_detail_frame, text='Phone Number', font=('times new roman',15, 'bold'),bg='magenta2',fg='black')  
 Phone_label.grid(row=0,column=4,padx=20)
-PhoneEntry = Entry(customer_detail_frame,font=('arial',15),bd=7,width=18)
+validate_input_cmd = root.register(validate_input)
+PhoneEntry = Entry(customer_detail_frame, font=('arial',15), bd=7, width=18, validate="key", validatecommand=(validate_input_cmd, "%P"))
 PhoneEntry.grid(row=0,column=5,padx=6)
 
 #To position the Address
@@ -59,36 +119,42 @@ Hair_cut = Label(ServiceFrame, text='Hair Cut',font=('times new roman',15, 'bold
 Hair_cut.grid(row=0,column=0,sticky=W)
 Hair_cutEntry = Entry(ServiceFrame,font=('arial',15,'bold'),width=10,bd=5)
 Hair_cutEntry.grid(row=0,column=1,padx=10,pady=9)
+Hair_cutEntry.insert(0,0)
 
 #To add waxing
 Waxing = Label(ServiceFrame, text='Waxing',font=('times new roman',15, 'bold'),fg='grey5',bd=8, bg='magenta2')
 Waxing.grid(row=1,column=0,sticky=W)
 WaxingEntry = Entry(ServiceFrame,font=('arial',15,'bold'),width=10,bd=5)
 WaxingEntry.grid(row=1,column=1,padx=10,pady=9)
+WaxingEntry.insert(0,0)
 
 #to add Hair wash
 Hairwash = Label(ServiceFrame, text='Hair Wash',font=('times new roman',15, 'bold'),fg='grey5',bd=8, bg='magenta2')
 Hairwash.grid(row=2,column=0,sticky=W)
 HairwashEntry = Entry(ServiceFrame,font=('arial',15,'bold'),width=10,bd=5)
 HairwashEntry.grid(row=2,column=1,padx=10,pady=9)
+HairwashEntry.insert(0,0)
 
 #To add the Facial
 Facial = Label(ServiceFrame, text='Facial',font=('times new roman',15, 'bold'),fg='grey5',bd=8, bg='magenta2')
 Facial.grid(row=3,column=0,sticky=W)
 FacialEntry = Entry(ServiceFrame,font=('arial',15,'bold'),width=10,bd=5)
 FacialEntry.grid(row=3,column=1,padx=10,pady=9)
+FacialEntry.insert(0,0)
 
 #To add Facebleach
 Facebleach = Label(ServiceFrame, text='Face Bleach',font=('times new roman',15, 'bold'),fg='grey5',bd=8, bg='magenta2')
 Facebleach.grid(row=4,column=0,sticky=W)
 FacebleachEntry = Entry(ServiceFrame,font=('arial',15,'bold'),width=10,bd=5)
 FacebleachEntry.grid(row=4,column=1,padx=10,pady=9)
+FacebleachEntry.insert(0,0)
 
 #To add Hairspa
 Hairspa = Label(ServiceFrame, text='Hair Spa',font=('times new roman',15, 'bold'),fg='grey5',bd=8, bg='magenta2')
 Hairspa.grid(row=5,column=0,sticky=W)
 HairspaEntry = Entry(ServiceFrame,font=('arial',15,'bold'),width=10,bd=5)
 HairspaEntry.grid(row=5,column=1,padx=10,pady=9)
+HairspaEntry.insert(0,0)
 
 #Service Section
 ServiceFrame = LabelFrame(productsframe,text='Services',font=('times new roman',15, 'bold'),bg='magenta2',relief=GROOVE,fg='black')
@@ -97,33 +163,39 @@ ServiceFrame.grid(row=0,column=1)
 #To add the services
 Medicure  = Label(ServiceFrame, text='Medicure',font=('times new roman',15, 'bold'),fg='grey5',bd=8, bg='magenta2')
 Medicure.grid(row=0,column=0,sticky=W)
-Medicure.Entry = Entry(ServiceFrame,font=('arial',15,'bold'),width=10,bd=5)
-Medicure.Entry.grid(row=0,column=1,padx=10,pady=9)
+MedicureEntry = Entry(ServiceFrame,font=('arial',15,'bold'),width=10,bd=5)
+MedicureEntry.grid(row=0,column=1,padx=10,pady=9)
+MedicureEntry.insert(0,0)
 
 Pedicure  = Label(ServiceFrame, text='Pedicure',font=('times new roman',15, 'bold'),fg='grey5',bd=8, bg='magenta2')
 Pedicure.grid(row=1,column=0,sticky=W)
-Pedicure.Entry = Entry(ServiceFrame,font=('arial',15,'bold'),width=10,bd=5)
-Pedicure.Entry.grid(row=1,column=1,padx=10,pady=9)
+PedicureEntry = Entry(ServiceFrame,font=('arial',15,'bold'),width=10,bd=5)
+PedicureEntry.grid(row=1,column=1,padx=10,pady=9)
+PedicureEntry.insert(0,0)
 
 Massage = Label(ServiceFrame, text='Massage',font=('times new roman',15, 'bold'),fg='grey5',bd=8, bg='magenta2')
 Massage.grid(row=2,column=0,sticky=W)
-Massage.Entry = Entry(ServiceFrame,font=('arial',15,'bold'),width=10,bd=5)
-Massage.Entry.grid(row=2,column=1,padx=10,pady=9)
+MassageEntry = Entry(ServiceFrame,font=('arial',15,'bold'),width=10,bd=5)
+MassageEntry.grid(row=2,column=1,padx=10,pady=9)
+MassageEntry.insert(0,0)
 
 Eyebrow = Label(ServiceFrame, text='Eyebrow',font=('times new roman',15, 'bold'),fg='grey5',bd=8, bg='magenta2')
 Eyebrow.grid(row=3,column=0,sticky=W)
-Eyebrow.Entry = Entry(ServiceFrame,font=('arial',15,'bold'),width=10,bd=5)
-Eyebrow.Entry.grid(row=3,column=1,padx=10,pady=9)
+EyebrowEntry = Entry(ServiceFrame,font=('arial',15,'bold'),width=10,bd=5)
+EyebrowEntry.grid(row=3,column=1,padx=10,pady=9)
+EyebrowEntry.insert(0,0)
 
 Haircolour = Label(ServiceFrame, text='Hair colour',font=('times new roman',15, 'bold'),fg='grey5',bd=8, bg='magenta2')
 Haircolour.grid(row=4,column=0,sticky=W)
-Haircolour.Entry = Entry(ServiceFrame,font=('arial',15,'bold'),width=10,bd=5)
-Haircolour.Entry.grid(row=4,column=1,padx=10,pady=9)
+HaircolourEntry = Entry(ServiceFrame,font=('arial',15,'bold'),width=10,bd=5)
+HaircolourEntry.grid(row=4,column=1,padx=10,pady=9)
+HaircolourEntry.insert(0,0)
 
 Makeup = Label(ServiceFrame, text='Makeup',font=('times new roman',15, 'bold'),fg='grey5',bd=8, bg='magenta2')
 Makeup.grid(row=5,column=0,sticky=W)
-Makeup.Entry = Entry(ServiceFrame,font=('arial',15,'bold'),width=10,bd=5)
-Makeup.Entry.grid(row=5,column=1,padx=10,pady=9)
+MakeupEntry = Entry(ServiceFrame,font=('arial',15,'bold'),width=10,bd=5)
+MakeupEntry.grid(row=5,column=1,padx=10,pady=9)
+MakeupEntry.insert(0,0)
 
 #To create the product frame
 ProductFrame = LabelFrame(productsframe,text='Products',font=('times new roman',15, 'bold'),bg='magenta2',relief=GROOVE,fg='black')
@@ -134,31 +206,37 @@ Loreal = Label(ProductFrame, text='Loreal',font=('times new roman',15, 'bold'),f
 Loreal.grid(row=0,column=0,sticky=W)
 LorealEntry = Entry(ProductFrame,font=('arial',15,'bold'),width=10,bd=5)
 LorealEntry.grid(row=0,column=1,padx=10,pady=9)
+LorealEntry.insert(0,0)
 
 Dove = Label(ProductFrame, text='Dove',font=('times new roman',15, 'bold'),fg='grey5',bd=8, bg='magenta2')
 Dove.grid(row=1,column=0,sticky=W)
 DoveEntry = Entry(ProductFrame,font=('arial',15,'bold'),width=10,bd=5)
 DoveEntry.grid(row=1,column=1,padx=10,pady=9)
+DoveEntry.insert(0,0)
 
 Pantene = Label(ProductFrame, text='Pantene',font=('times new roman',15, 'bold'),fg='grey5',bd=8, bg='magenta2')
 Pantene.grid(row=2,column=0,sticky=W)
 PanteneEntry = Entry(ProductFrame,font=('arial',15,'bold'),width=10,bd=5)
 PanteneEntry.grid(row=2,column=1,padx=10,pady=9)
+PanteneEntry.insert(0,0)
 
 VLCC = Label(ProductFrame, text='VLCC',font=('times new roman',15, 'bold'),fg='grey5',bd=8, bg='magenta2')
 VLCC.grid(row=3,column=0,sticky=W)
 VLCCEntry = Entry(ProductFrame,font=('arial',15,'bold'),width=10,bd=5)
 VLCCEntry.grid(row=3,column=1,padx=10,pady=9)
+VLCCEntry.insert(0,0)
 
 Sunsilk  = Label(ProductFrame, text='Sunsilk',font=('times new roman',15, 'bold'),fg='grey5',bd=8, bg='magenta2')
 Sunsilk.grid(row=4,column=0,sticky=W)
-Sunsilk.Entry = Entry(ProductFrame,font=('arial',15,'bold'),width=10,bd=5)
-Sunsilk.Entry.grid(row=4,column=1,padx=10,pady=9)
+SunsilkEntry = Entry(ProductFrame,font=('arial',15,'bold'),width=10,bd=5)
+SunsilkEntry.grid(row=4,column=1,padx=10,pady=9)
+SunsilkEntry.insert(0,0)
 
 Clinicplus  = Label(ProductFrame, text='Clinic Plus',font=('times new roman',15, 'bold'),fg='grey5',bd=8, bg='magenta2')
 Clinicplus.grid(row=5,column=0,sticky=W)
-Clinicplus.Entry = Entry(ProductFrame,font=('arial',15,'bold'),width=10,bd=5)
-Clinicplus.Entry.grid(row=5,column=1,padx=10,pady=9)
+ClinicplusEntry = Entry(ProductFrame,font=('arial',15,'bold'),width=10,bd=5)
+ClinicplusEntry.grid(row=5,column=1,padx=10,pady=9)
+ClinicplusEntry.insert(0,0)
 
 #To create the bill frame
 billframe = Frame(productsframe,bd=8,relief=GROOVE)
@@ -180,43 +258,46 @@ BillmenuFrame.pack(fill=X)
 
 ServicePrice = Label(BillmenuFrame, text='Service Price',font=('times new roman',15, 'bold'),fg='grey5',bd=8, bg='magenta2')
 ServicePrice.grid(row=0,column=0,sticky=W)
-ServicePrice.Entry = Entry(BillmenuFrame,font=('arial',15,'bold'),width=10,bd=5)
-ServicePrice.Entry.grid(row=0,column=1,padx=10,pady=9)
+ServicePriceEntry = Entry(BillmenuFrame,font=('arial',15,'bold'),width=10,bd=5)
+ServicePriceEntry.grid(row=0,column=1,padx=10,pady=9)
 
 OtherServicePrice = Label(BillmenuFrame, text='Other Services Price',font=('times new roman',15, 'bold'),fg='grey5',bd=8, bg='magenta2')
 OtherServicePrice.grid(row=1,column=0,sticky=W)
-OtherServicePrice.Entry = Entry(BillmenuFrame,font=('arial',15,'bold'),width=10,bd=5)
-OtherServicePrice.Entry.grid(row=1,column=1,padx=10,pady=9)
+OtherServicePriceEntry = Entry(BillmenuFrame,font=('arial',15,'bold'),width=10,bd=5)
+OtherServicePriceEntry.grid(row=1,column=1,padx=10,pady=9)
 
 TotalProductPrice = Label(BillmenuFrame, text='Total Product Price',font=('times new roman',15, 'bold'),fg='grey5',bd=8, bg='magenta2')
 TotalProductPrice.grid(row=0,column=2,sticky=W)
-TotalProductPrice.Entry = Entry(BillmenuFrame,font=('arial',15,'bold'),width=10,bd=5)
-TotalProductPrice.Entry.grid(row=0,column=3,padx=10,pady=9)
+TotalProductPriceEntry = Entry(BillmenuFrame,font=('arial',15,'bold'),width=10,bd=5)
+TotalProductPriceEntry.grid(row=0,column=3,padx=10,pady=9)
 
-TotalServicePrice = Label(BillmenuFrame, text='Total Services Cost',font=('times new roman',15, 'bold'),fg='grey5',bd=8, bg='magenta2')
+TotalServicePrice = Label(BillmenuFrame, text='Total Cost',font=('times new roman',15, 'bold'),fg='grey5',bd=8, bg='magenta2')
 TotalServicePrice.grid(row=1,column=2,sticky=W)
-TotalServicePrice.Entry = Entry(BillmenuFrame,font=('arial',15,'bold'),width=10,bd=5)
-TotalServicePrice.Entry.grid(row=1,column=3,padx=10,pady=9)
+TotalServicePriceEntry = Entry(BillmenuFrame,font=('arial',15,'bold'),width=10,bd=5)
+TotalServicePriceEntry.grid(row=1,column=3,padx=10,pady=9)
 
 GST = Label(BillmenuFrame, text='GST',font=('times new roman',15, 'bold'),fg='grey5',bd=8, bg='magenta2')
 GST.grid(row=0,column=4,sticky=W)
-GST.Entry = Entry(BillmenuFrame,font=('arial',15,'bold'),width=10,bd=5)
-GST.Entry.grid(row=0,column=5,padx=10,pady=9)
+GSTEntry = Entry(BillmenuFrame,font=('arial',15,'bold'),width=10,bd=5)
+GSTEntry.grid(row=0,column=5,padx=10,pady=9)
+GSTEntry.insert(0,10)
 
 CGST = Label(BillmenuFrame, text='CGST',font=('times new roman',15, 'bold'),fg='grey5',bd=8, bg='magenta2')
 CGST.grid(row=1,column=4,sticky=W)
-CGST.Entry = Entry(BillmenuFrame,font=('arial',15,'bold'),width=10,bd=5)
-CGST.Entry.grid(row=1,column=5,padx=10,pady=9)
+CGSTEntry = Entry(BillmenuFrame,font=('arial',15,'bold'),width=10,bd=5)
+CGSTEntry.grid(row=1,column=5,padx=10,pady=9)
+CGSTEntry.insert(0,10)
+
 
 #Add button
 buttonFrame = Frame(BillmenuFrame,bd=8,relief=GROOVE)
 buttonFrame.grid(row=0,column=6,rowspan=3)
 
-Totalbutton=Button(buttonFrame,text='Total Bill',font=('arial',16, 'bold'),bg='magenta2',fg='grey5',bd=5,width=8,pady=10)
+Totalbutton=Button(buttonFrame,text='Total',font=('arial',16, 'bold'),bg='magenta2',fg='grey5',bd=5,width=8,pady=10,command=total)
 Totalbutton.grid(row=0,column=0,pady=20,padx=5)
 
-SaveButton=Button(buttonFrame,text='Save',font=('arial',16, 'bold'),bg='magenta2',fg='grey5',bd=5,width=8,pady=10)
-SaveButton.grid(row=0,column=1,pady=20,padx=5)
+totalbill=Button(buttonFrame,text='Total Bill',font=('arial',16, 'bold'),bg='magenta2',fg='grey5',bd=5,width=8,pady=10,command=bill)
+totalbill.grid(row=0,column=1,pady=20,padx=5)
 
 EmailButton=Button(buttonFrame,text='Email',font=('arial',16, 'bold'),bg='magenta2',fg='grey5',bd=5,width=8,pady=10)
 EmailButton.grid(row=0,column=2,pady=20,padx=5)
