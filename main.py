@@ -1,6 +1,32 @@
 from tkinter import *
 from tkinter import messagebox
-import random
+import random,os
+
+if not os.path.exists('bills'):
+    os.mkdir('bills')
+
+def bill_save():
+    global billnumber
+    result = messagebox.askyesno('Confirm','Do you want to save the bill?')
+    if result:
+        bill_content = textarea.get(1.0,END)
+        file = open(f'bills/ {billnumber}.txt','w')
+        file.write(bill_content)
+        file.close()
+        messagebox.showinfo('Success',f'Bill Number {billnumber} is saved successfully')
+        billnumber=random.randint(500,1000)
+
+# def search_bill():
+#     for i in os.listdir('bills/'):
+#         if i.split('.')[0]==BillEntry.get():
+#             f = open('bills/{i}','r')
+#             textarea.delete(1.0,END)
+#             for data in f:
+#                 textarea.insert(END,data)
+#             f.close()
+#             break
+#     else:
+#         messagebox.showerror('Error','Invalid bill number')
 
 billnumber=random.randint(500,1000)
 
@@ -13,10 +39,11 @@ def validate_input(new_value):
     else:
         return False
     
-def bill():
+def bill():    
     if nameEntry.get() == '' or PhoneEntry.get() == '' or AddEntry.get() == '':
         messagebox.showerror('Error','Customer Details are required')
     else:
+        textarea.delete(1.0,END)
         textarea.insert(END,'\t\t\t\tXYZ Saloon\n\t\t\t\t   India\n')
         textarea.insert(END,f'\nBill Number: {billnumber}\n')
         textarea.insert(END,f'\nCustomer Name: {nameEntry.get()}\n')
@@ -49,10 +76,32 @@ def bill():
             textarea.insert(END,f'\nHair Colour\t\t\t{HaircolourEntry.get()}\t\t\tRs {HaircolourEntryservice_price}')   
         if MakeupEntry.get()!='0':
             textarea.insert(END,f'\nMakeup\t\t\t{MakeupEntry.get()}\t\t\tRs {MakeupEntryservice_price}')   
+        if  LorealEntry.get()!='0':
+            textarea.insert(END,f'\nLoreal Shampoo\t\t\t{LorealEntry.get()}\t\t\tRs {LorealEntry_price}')
+        if  DoveEntry.get()!='0':
+            textarea.insert(END,f'\nDove Shampoo\t\t\t{DoveEntry.get()}\t\t\tRs {DoveEntry_price}')     
+        if  PanteneEntry.get()!='0':
+            textarea.insert(END,f'\nPantene Shampoo\t\t\t{PanteneEntry.get()}\t\t\tRs {PanteneEntry_price}')         
+        if  VLCCEntry.get()!='0':
+            textarea.insert(END,f'\nVLCC Shampoo\t\t\t{VLCCEntry.get()}\t\t\tRs {VLCCEntry_price}') 
+        if  SunsilkEntry.get()!='0':
+            textarea.insert(END,f'\nSunsilk Shampoo\t\t\t{SunsilkEntry.get()}\t\t\tRs {SunsilkEntry_price}')     
+        if  ClinicplusEntry.get()!='0':
+            textarea.insert(END,f'\nClinic Plus Shampoo\t\t\t{ClinicplusEntry.get()}\t\t\tRs {ClinicplusEntry_price}')  
+        textarea.insert(END,f'\nOther Service\t\t\t\t\t\tRs {OtherServicePriceEntry.get()}') 
+        textarea.insert(END,'\n------------------------------------------------------------------------')
+        textarea.insert(END,f'\nGST\t\t\t\t\t\t10%') 
+        textarea.insert(END,f'\nCGST\t\t\t\t\t\t10%') 
+        textarea.insert(END,'\n------------------------------------------------------------------------')
+        textarea.insert(END,f'\nTotal Bill\t\t\t\t\t\tRs {total_bill_button}')
+        bill_save()
+        
 
 def total():
     global hair_cutservice_price, WaxingEntryservice_price, HairwashEntryservice_price, FacialEntryservice_price, FacebleachEntryservice_price, HairspaEntryservice_price
     global MedicureEntryservice_price, PedicureEntryservice_price, MassageEntryservice_price, EyebrowEntryservice_price, HaircolourEntryservice_price, MakeupEntryservice_price
+    global LorealEntry_price, DoveEntry_price, PanteneEntry_price, VLCCEntry_price, SunsilkEntry_price, ClinicplusEntry_price
+    global total_bill_button
     # Service Calculation
     hair_cutservice_price=int(Hair_cutEntry.get())*100
     WaxingEntryservice_price = int(WaxingEntry.get())*30
@@ -82,10 +131,13 @@ def total():
     totalproduct_price = LorealEntry_price + DoveEntry_price + PanteneEntry_price + VLCCEntry_price + SunsilkEntry_price + ClinicplusEntry_price
     TotalProductPriceEntry.delete(0,END) #it will delete everything before the operation is performed
     TotalProductPriceEntry.insert(0, 'Rs '+ str(totalproduct_price))    
+    Totalotherserviceprice = int(float(OtherServicePriceEntry.get()))
 
+    total = (Totalotherserviceprice + totalproduct_price + totalservice_price)*1.20
+    TotalServicePriceEntry.delete(0,END)
+    TotalServicePriceEntry.insert(0, 'Rs '+str(total))
 
-
-
+    total_bill_button = total
     
 #Create the GUI
 #Create window
@@ -132,7 +184,7 @@ AddEntry = Entry(customer_detail_frame,font=('arial',15),bd=7,width=18)
 AddEntry.grid(row=0,column=7,padx=6)
 
 #Add thge search button
-Searchbutton=Button(customer_detail_frame,text='SEARCH',font=('arial',12,'bold'),border=7,width=10)
+Searchbutton=Button(customer_detail_frame,text='SEARCH',font=('arial',12,'bold'),border=7,width=10,command=search_bill)
 Searchbutton.grid(row=0,column=8,padx=20,pady=8)
 
 #To create product frame
@@ -324,7 +376,7 @@ buttonFrame.grid(row=0,column=6,rowspan=3)
 Totalbutton=Button(buttonFrame,text='Total',font=('arial',16, 'bold'),bg='magenta2',fg='grey5',bd=5,width=8,pady=10,command=total)
 Totalbutton.grid(row=0,column=0,pady=20,padx=5)
 
-totalbill=Button(buttonFrame,text='Total Bill',font=('arial',16, 'bold'),bg='magenta2',fg='grey5',bd=5,width=8,pady=10,command=bill)
+totalbill=Button(buttonFrame,text='Generate',font=('arial',16, 'bold'),bg='magenta2',fg='grey5',bd=5,width=8,pady=10,command=bill)
 totalbill.grid(row=0,column=1,pady=20,padx=5)
 
 EmailButton=Button(buttonFrame,text='Email',font=('arial',16, 'bold'),bg='magenta2',fg='grey5',bd=5,width=8,pady=10)
