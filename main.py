@@ -1,6 +1,6 @@
 from tkinter import *
 from tkinter import messagebox
-import random,os
+import random,os, tempfile, smtplib
 
 if not os.path.exists('bills'):
     os.mkdir('bills')
@@ -16,19 +16,157 @@ def bill_save():
         messagebox.showinfo('Success',f'Bill Number {billnumber} is saved successfully')
         billnumber=random.randint(500,1000)
 
-# def search_bill():
-#     for i in os.listdir('bills/'):
-#         if i.split('.')[0]==BillEntry.get():
-#             f = open('bills/{i}','r')
-#             textarea.delete(1.0,END)
-#             for data in f:
-#                 textarea.insert(END,data)
-#             f.close()
-#             break
-#     else:
-#         messagebox.showerror('Error','Invalid bill number')
+def search_bill():
+    for i in os.listdir('bills/'):
+        if i.split('.')[0]==BillEntry.get():
+            f = open(f'bills/{i}','r')
+            textarea.delete(1.0,END)
+            for data in f:
+                textarea.insert(END,data)
+            f.close()
+            break
+    else:
+        messagebox.showerror('Error','Invalid bill number')
+
+def bill_print():
+    if textarea.get(1.0,END)=='\n':
+        messagebox.showerror('Error','Bill is empty')
+    else:
+        file=tempfile.mktemp('.txt')
+        open(file,'w').write(textarea.get(1.0,END))
+        os.startfile(file,'print')
+
+
+def send_email():
+    def send_gmail():
+        #to establish the connection and send the mail when clicking on send button
+        ob=smtplib.SMTP('smtp.gmail.com',587)
+        ob.starttls()
+        ob.login(gmailidLabelentry.get(),passwordentry.get())
+        message = emailtext_area.get(1.0,END)
+        ob.sendmail(gmailidLabelentry.get(),receiveremailentry.get(),message)
+        ob.quit()
+        messagebox.showinfo('Success','Bill is successfully sent')
+        root1.destroy()
+
+    if textarea.get(1.0,END)=='\n':
+        messagebox.showerror('Error','Bill is empty')
+    else:
+        root1=Toplevel()
+        root1.grab_set()
+        root1.title('Send email')
+        root1.config(bg='gray20')
+        root1.resizable(0,0)
+        
+        #Sender details
+        senderFrame = LabelFrame(root1,text='Sender',font=('arial',16,'bold'),bd=6,bg='gray20', fg='white')
+        senderFrame.pack(fill=X)
+        senderFrame.grid(row=0,column=0,padx=40,pady=20)
+
+        gmailidLabel = Label(senderFrame,text="Email",font=('arial',14,'bold'),bg='gray20', fg='white')
+        gmailidLabel.grid(row=0,column=0,padx=10,pady=8)
+
+        gmailidLabelentry =Entry(senderFrame,font=('arial',14,'bold'),bd=2, width=23, relief=RIDGE)
+        gmailidLabelentry.grid(row=0,column=1,padx=10,pady=8)
+
+        passwordLabel = Label(senderFrame,text="Password",font=('arial',14,'bold'),bg='gray20', fg='white')
+        passwordLabel.grid(row=1,column=0,padx=10,pady=8)
+
+        passwordentry =Entry(senderFrame,font=('arial',14,'bold'),bd=2, width=23, relief=RIDGE,show='*')
+        passwordentry.grid(row=1,column=1,padx=10,pady=8)
+
+        #Recipent details
+        RecipentFrame = LabelFrame(root1,text='Recipent',font=('arial',16,'bold'),bd=6,bg='gray20', fg='white')
+        RecipentFrame.grid(row=1,column=0,padx=40,pady=20)
+
+        receiveremailLabel = Label(RecipentFrame,text="Receiver's Email",font=('arial',14,'bold'),bg='gray20', fg='white')
+        receiveremailLabel.grid(row=0,column=0,padx=10,pady=8)
+
+        receiveremailentry =Entry(RecipentFrame,font=('arial',14,'bold'),bd=2, width=23, relief=RIDGE)
+        receiveremailentry.grid(row=0,column=1,padx=10,pady=8)
+
+        receivermessageLabel = Label(RecipentFrame,text="Message",font=('arial',14,'bold'),bg='gray20', fg='white')
+        receivermessageLabel.grid(row=1,column=0,padx=10,pady=8)
+
+        emailtext_area = Text(RecipentFrame,font=('arial',14,'bold'),bd=2,relief=SUNKEN,width=42,height=11)
+        emailtext_area.grid(row=2,column=0,columnspan=2)
+        emailtext_area.delete(1.0,END)
+        emailtext_area.insert(END,textarea.get(1.0,END).replace('=','').replace('-','').replace('\t\t\t','\t\t'))
+
+        sendbutton = Button(root1,text='SEND',font=('arial',16,'bold'),width=15,command=send_gmail)
+        sendbutton.grid(row=2,column=0,pady=20)
+        root1.mainloop()
+
+def clear():
+    Hair_cutEntry.delete(0,END)
+    Hair_cutEntry.insert(0,0)
+
+    WaxingEntry.delete(0,END)
+    WaxingEntry.insert(0,0)
+
+    HairwashEntry.delete(0,END)
+    HairwashEntry.insert(0,0)
+
+    FacialEntry.delete(0,END)
+    FacialEntry.insert(0,0)
+
+    FacebleachEntry.delete(0,END)
+    FacebleachEntry.insert(0,0)
+
+    HairspaEntry.delete(0,END)
+    HairspaEntry.insert(0,0)
+
+    MedicureEntry.delete(0,END)
+    MedicureEntry.insert(0,0)
+
+    PedicureEntry.delete(0,END)
+    PedicureEntry.insert(0,0)
+
+    MassageEntry.delete(0,END)
+    MassageEntry.insert(0,0)
+
+    EyebrowEntry.delete(0,END)
+    EyebrowEntry.insert(0,0)
+
+    HaircolourEntry.delete(0,END)
+    HaircolourEntry.insert(0,0)
+
+    MakeupEntry.delete(0,END)
+    MakeupEntry.insert(0,0)
+
+    LorealEntry.delete(0,END)
+    LorealEntry.insert(0,0)
+
+    DoveEntry.delete(0,END)
+    DoveEntry.insert(0,0)
+
+    PanteneEntry.delete(0,END)
+    PanteneEntry.insert(0,0)
+
+    VLCCEntry.delete(0,END)
+    VLCCEntry.insert(0,0)
+
+    SunsilkEntry.delete(0,END)
+    SunsilkEntry.insert(0,0)
+
+    ClinicplusEntry.delete(0,END)
+    ClinicplusEntry.insert(0,0)
+
+    TotalProductPriceEntry.delete(0,END)
+    ServicePriceEntry.delete(0, END)
+    TotalServicePriceEntry.delete(0,END)
+    OtherServicePriceEntry.delete(0,END)
+    nameEntry.delete(0,END)
+    PhoneEntry.delete(0,END)
+    AddEntry.delete(0,END)
+    textarea.delete(1.0,END)
+        
+
 
 billnumber=random.randint(500,1000)
+
+
+
 
 #Create the functionality
 def validate_input(new_value):
@@ -44,14 +182,14 @@ def bill():
         messagebox.showerror('Error','Customer Details are required')
     else:
         textarea.delete(1.0,END)
-        textarea.insert(END,'\t\t\t\tXYZ Saloon\n\t\t\t\t   India\n')
+        textarea.insert(END,'\t\t\t\t***XYZ Saloon***\n\t\t\t\t   ***India***\n')
         textarea.insert(END,f'\nBill Number: {billnumber}\n')
         textarea.insert(END,f'\nCustomer Name: {nameEntry.get()}\n')
         textarea.insert(END,f'\nPhone Number: {PhoneEntry.get()}\n')
         textarea.insert(END,f'\nAddress: {AddEntry.get()}')
-        textarea.insert(END,'\n------------------------------------------------------------------------')
+        textarea.insert(END,'\n--------------------------------------------------------------------------------')
         textarea.insert(END,'Service\t\t\tQuantity\t\t\tPrice')
-        textarea.insert(END,'\n========================================================================')
+        textarea.insert(END,'\n================================================================================')
         if Hair_cutEntry.get()!='0':
             textarea.insert(END,f'\nHair Cut\t\t\t{Hair_cutEntry.get()}\t\t\tRs {hair_cutservice_price}')
         if WaxingEntry.get()!='0':
@@ -89,10 +227,10 @@ def bill():
         if  ClinicplusEntry.get()!='0':
             textarea.insert(END,f'\nClinic Plus Shampoo\t\t\t{ClinicplusEntry.get()}\t\t\tRs {ClinicplusEntry_price}')  
         textarea.insert(END,f'\nOther Service\t\t\t\t\t\tRs {OtherServicePriceEntry.get()}') 
-        textarea.insert(END,'\n------------------------------------------------------------------------')
+        textarea.insert(END,'\n--------------------------------------------------------------------------------')
         textarea.insert(END,f'\nGST\t\t\t\t\t\t10%') 
         textarea.insert(END,f'\nCGST\t\t\t\t\t\t10%') 
-        textarea.insert(END,'\n------------------------------------------------------------------------')
+        textarea.insert(END,'\n--------------------------------------------------------------------------------')
         textarea.insert(END,f'\nTotal Bill\t\t\t\t\t\tRs {total_bill_button}')
         bill_save()
         
@@ -143,7 +281,7 @@ def total():
 #Create window
 root = Tk()
 root.title('Shopkeeper Retail System')
-root.geometry('1420x820')
+root.geometry('1480x820')
 root.iconbitmap('icon.ico')
 
 #Create the heading lebel and heading
@@ -328,7 +466,7 @@ billarea_label.pack(fill=X)
 Scroll_bar = Scrollbar(billframe,orient=VERTICAL)
 Scroll_bar.pack(side=RIGHT,fill=Y)
 
-textarea = Text(billframe,height=18,width=72,yscrollcommand=Scroll_bar.set)
+textarea = Text(billframe,height=18,width=80,yscrollcommand=Scroll_bar.set)
 textarea.pack()
 Scroll_bar.config(command=textarea.yview)
 
@@ -373,17 +511,20 @@ CGSTEntry.insert(0,10)
 buttonFrame = Frame(BillmenuFrame,bd=8,relief=GROOVE)
 buttonFrame.grid(row=0,column=6,rowspan=3)
 
-Totalbutton=Button(buttonFrame,text='Total',font=('arial',16, 'bold'),bg='magenta2',fg='grey5',bd=5,width=8,pady=10,command=total)
+Totalbutton=Button(buttonFrame,text='Total',font=('arial',16, 'bold'),bg='magenta2',fg='grey5',bd=5,width=7,pady=10,command=total)
 Totalbutton.grid(row=0,column=0,pady=20,padx=5)
 
-totalbill=Button(buttonFrame,text='Generate',font=('arial',16, 'bold'),bg='magenta2',fg='grey5',bd=5,width=8,pady=10,command=bill)
+totalbill=Button(buttonFrame,text='Generate',font=('arial',16, 'bold'),bg='magenta2',fg='grey5',bd=5,width=7,pady=10,command=bill)
 totalbill.grid(row=0,column=1,pady=20,padx=5)
 
-EmailButton=Button(buttonFrame,text='Email',font=('arial',16, 'bold'),bg='magenta2',fg='grey5',bd=5,width=8,pady=10)
+EmailButton=Button(buttonFrame,text='Email',font=('arial',16, 'bold'),bg='magenta2',fg='grey5',bd=5,width=7,pady=10,command=send_email)
 EmailButton.grid(row=0,column=2,pady=20,padx=5)
 
-PrintButton=Button(buttonFrame,text='Print',font=('arial',16, 'bold'),bg='magenta2',fg='grey5',bd=5,width=8,pady=10)
+PrintButton=Button(buttonFrame,text='Print',font=('arial',16, 'bold'),bg='magenta2',fg='grey5',bd=5,width=7,pady=10,command=bill_print)
 PrintButton.grid(row=0,column=3,pady=20,padx=5)
+
+clearButton=Button(buttonFrame,text='Clear',font=('arial',16, 'bold'),bg='magenta2',fg='grey5',bd=5,width=7,pady=10,command=clear)
+clearButton.grid(row=0,column=4,pady=20,padx=5)
 
 #To Display the service provide
 ServiceProvider= LabelFrame(root,text='Shop Details',font=('times new roman',15, 'bold'),bg='magenta2',relief=GROOVE,fg='black')
